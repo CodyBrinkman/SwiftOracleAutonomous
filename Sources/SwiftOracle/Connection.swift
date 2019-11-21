@@ -26,7 +26,7 @@ struct DatabaseError: CustomStringConvertible {
     var description: String {
         return "text: \(text)),\n\tstatement: \(statement)"
     }
-    
+
 }
 
 enum DatabaseErrors: Error {
@@ -42,46 +42,22 @@ func error_callback(_ error: OpaquePointer?) {
 }
 
 public struct ConnectionInfo {
-    let service_name: String, user:String, pwd: String
+    let connect_string: String, user:String, pwd: String
 }
-
-
-
-public struct OracleService {
-    var raw_str: String?, host:String?, port:String?, service:String?
-    public init(from_string raw_str: String){
-        self.raw_str = raw_str
-    }
-    public init(host: String, port: String, service: String) {
-        self.host = host; self.port = port; self.service = service
-    }
-    
-    var string: String {
-        if let raw_str = raw_str {
-            return raw_str
-        }
-        if let host = host, let port = port, let service = service  {
-            return "\(host):\(port)/\(service)"
-        }
-        return ""
-    }
-}
-
-
 
 open class Connection {
     // associatedtype Error: ErrorType
-    
+
     fileprivate var connection: OpaquePointer? = nil
-    
-    
+
+
     let conn_info: ConnectionInfo
-    
-    public required init(service: OracleService, user:String, pwd: String) {
-        conn_info = ConnectionInfo(service_name: service.string, user: user, pwd: pwd)
+
+    public required init(connectString: String, user:String, pwd: String) {
+        conn_info = ConnectionInfo(connect_string: connectString, user: user, pwd: pwd)
         OCI_Initialize({error_callback($0)}, nil, UInt32(OCI_ENV_DEFAULT)); //should be once per app
     }
-    
+
     func close() {
         guard let connection = connection else {
             return
@@ -90,7 +66,7 @@ open class Connection {
         self.connection = nil
     }
     open func open() throws {
-        connection = OCI_ConnectionCreate(conn_info.service_name, conn_info.user, conn_info.pwd, UInt32(OCI_SESSION_DEFAULT));
+        connection = OCI_ConnectionCreate(conn_info.connect_string, conn_info.user, conn_info.pwd, UInt32(OCI_SESSION_DEFAULT));
     }
     open func cursor() throws -> Cursor {
         guard let connection = connection else {
@@ -122,7 +98,5 @@ open class Connection {
         close()
         OCI_Cleanup()  //should be once per app
     }
-    
+
 }
-
-
