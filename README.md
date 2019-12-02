@@ -60,7 +60,7 @@ $ cd <wallet directory>
 $ vi sqlnet.ora
 ```
 ![wallet](/Users/clbrinkm/Documents/Swift On OCI/A12.png)
-
+Format: ![Alt Text](url)
 
 
 
