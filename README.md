@@ -59,10 +59,11 @@ set wallet location to TNS_ADMIN
 $ cd <wallet directory>
 $ vi sqlnet.ora
 ```
-![wallet](/Users/clbrinkm/Documents/Swift On OCI/A12.png)
-Format: ![Alt Text](url)
-
-
+set DIRECTORY to "$TNS_ADMIN". Your sqlnet.ora file should look like this:
+```
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="$TNS_ADMIN")))
+SSL_SERVER_DN_MATCH=yes
+```
 
 7. Adding to Vapor project
 ```swift
