@@ -13,3 +13,10 @@ oracle-instantclinet*-basic-*.rpm
 oracle-instantclinet*-devel-*.rpm
 oracle-instantclinet*-sqlplus-*.rpm
 ```
+
+2. Install RPMs
+```
+$ sudo alien -i oracle-instantclient*-basic-*.rpm
+$ sudo alien -i oracle-instantclinet*-devel-*.rpm
+$ sudo alien -i oracle-instantclinet*-sqlplus-*.rpm
+```
