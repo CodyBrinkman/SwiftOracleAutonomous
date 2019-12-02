@@ -20,3 +20,28 @@ $ sudo alien -i oracle-instantclient*-basic-*.rpm
 $ sudo alien -i oracle-instantclinet*-devel-*.rpm
 $ sudo alien -i oracle-instantclinet*-sqlplus-*.rpm
 ```
+
+3. Install libaio1
+```
+$ sudo apt install libaio1
+```
+
+4. Set environment variables
+```
+$ export ORACLE_HOME=/usr/lib/oracle/19.3/client64
+$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/oracle/19.3/client64/lib:/usr/local/lib
+```
+
+5. Download and configure OCILIB library
+```
+$ git clone https://github.com/vrogier/ocilib.git
+$ tar -zxf ocilib-4.5.2-gnu.tar.gz
+$ cd ocilib-4.5.2
+$ ./configure --with-oracle-headers-path=/usr/include/oracle/19.3/client64/ --with-oracle-lib-path=/usr/lib/oracle/19.3/client64/lib CFLAGS="-O2 -m64"
+$ make
+$ sudo make install
+```
+
+
+
+```
