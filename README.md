@@ -66,6 +66,8 @@ SSL_SERVER_DN_MATCH=yes
 ```
 
 7. Adding to Vapor project
+
+Package.swift
 ```swift
 // swift-tools-version:4.0
 import PackageDescription
@@ -91,4 +93,59 @@ let package = Package(
         .testTarget(name: "AppTests", dependencies: ["App"])
     ]
 )
+```
+
+routes.swift
+```swift
+import Vapor
+import SwiftOracleAutonomous
+
+let b = Connection(connectString: "<database connection string>", user:"<username>", pwd: "<your password>")
+
+final class ATPData {
+
+	func getData() -> [[String:String]] {	
+		try! b.open()
+		b.autocommit = true
+		let cursor = try! b.cursor()
+		try! cursor.execute("select * from test")
+		let items = cursor.map { row in row.dict.mapValues { "\($0 ?? "NULL")" }} //  output as [[String:String]]
+		return items
+
+	}
+}
+
+/// Register your application's routes here.
+public func routes(_ router: Router) throws {
+    // Basic "It works" example
+    router.get { req in
+        return "It works!"
+    }
+    
+    // Basic "Hello, world!" example
+    router.get("hello") { req in
+        return "Hello, world!"
+    }
+
+    //data route
+    router.get("test") { req -> [[String:String]] in
+	let atp = ATPData()
+	let atpdata = atp.getData()
+	return atpdata
+    }
+
+    // Example of configuring a controller
+    let todoController = TodoController()
+    router.get("todos", use: todoController.index)
+    router.post("todos", use: todoController.create)
+    router.delete("todos", Todo.parameter, use: todoController.delete)
+}
+```
+* connectString: Found in tnsnames.ora. My database name is SwiftATP so an example connectString is "swiftatp_high"
+* user: Database username. Example is "ADMIN"
+* pwd: Database password
+
+To run Vapor 3 you need to link the library files
+```
+$ swift build -Xlinker -L/usr/local/lib && ./.build/x86_64-unknown-linux/debug/Run --hostname 0.0.0.0
 ```
