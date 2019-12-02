@@ -42,6 +42,30 @@ $ make
 $ sudo make install
 ```
 
+6. Adding to Vapor project
+```swift
+// swift-tools-version:4.0
+import PackageDescription
 
+let package = Package(
+    name: "VaporAutonomousConnection",
+    products: [
+        .library(name: "VaporAutonomousConnection", targets: ["App"]),
+    ],
+    dependencies: [
+        // 💧 A server-side Swift web framework.
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
 
+        // 🔵 Swift ORM (queries, models, relations, etc) built on SQLite 3.
+        .package(url: "https://github.com/vapor/fluent-sqlite.git", from: "3.0.0"),
+
+	// Vapor Oracle Autonomous Database driver
+	.package(url: "https://github.com/CodyBrinkman/SwiftOracleAutonomous.git", from: "2.0.4")
+    ],
+    targets: [
+        .target(name: "App", dependencies: ["FluentSQLite", "SwiftOracleAutonomous", "Vapor"]),
+        .target(name: "Run", dependencies: ["App"]),
+        .testTarget(name: "AppTests", dependencies: ["App"])
+    ]
+)
 ```
