@@ -5,5 +5,11 @@ This builds on top of https://github.com/goloveychuk/SwiftOracle and wraps ocili
 
 Shoutout to Vincent Rogier (vrogier) himself for assistance on this project.
 
+_This example uses an Ubuntu 18.04 instance_
 
-How to use will be added soon:
+1. Download Oracle Client (this example uses v19.3)
+```
+oracle-instantclinet*-basic-*.rpm
+oracle-instantclinet*-devel-*.rpm
+oracle-instantclinet*-sqlplus-*.rpm
+```
