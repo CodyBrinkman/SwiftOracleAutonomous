@@ -42,7 +42,29 @@ $ make
 $ sudo make install
 ```
 
-6. Adding to Vapor project
+6. Configure wallet
+
+unzip
+```
+$ unzip <wallet> -d <directory-to-make name>
+```
+set TNS_NAMES environment variable
+```
+$ export TNS_ADMIN=<path to wallet>
+```
+_To have TNS_ADMIN environment variable persist multiple sessions add the path to ~/.bashrc_
+
+set wallet location to TNS_ADMIN
+```
+$ cd <wallet directory>
+$ vi sqlnet.ora
+```
+![wallet](/Users/clbrinkm/Documents/Swift On OCI/A12.png)
+
+
+
+
+7. Adding to Vapor project
 ```swift
 // swift-tools-version:4.0
 import PackageDescription
